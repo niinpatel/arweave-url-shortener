@@ -3,18 +3,19 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
-const styles = () => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1
   },
   grow: {
     flexGrow: 1
   }
-});
+}));
 
-const Navbar = ({ classes }) => {
+const Navbar = () => {
+  const classes = useStyles();
   return (
     <AppBar position="static">
       <Toolbar>
@@ -26,4 +27,4 @@ const Navbar = ({ classes }) => {
   );
 };
 
-export default withStyles(styles)(Navbar);
+export default Navbar;
