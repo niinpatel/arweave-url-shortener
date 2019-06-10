@@ -14,3 +14,31 @@ export const shortenUrlAndSave = async (url, wallet) => {
 
   return `${window.location.origin}/${shortUrl}`;
 };
+
+export const getLongUrl = async shortUrlPath => {
+  const query = {
+    op: 'and',
+    expr1: {
+      op: 'equals',
+      expr1: 'App-Name',
+      expr2: getAppName()
+    },
+    expr2: {
+      op: 'equals',
+      expr1: 'Short-Url',
+      expr2: shortUrlPath
+    }
+  };
+
+  const [txid] = await arweave.arql(query);
+
+  if (!txid) {
+    console.log('not found');
+    return null;
+  }
+
+  const transaction = await arweave.transactions.get(txid);
+  const longUrl = await transaction.get('data', { decode: true, string: true });
+
+  return longUrl;
+};
