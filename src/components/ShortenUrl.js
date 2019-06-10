@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import isUrl from 'is-url';
 import { shortenUrlAndSave } from '../api';
 
 import Input from '@material-ui/core/Input';
@@ -23,6 +24,11 @@ const ShortenUrl = ({ wallet }) => {
     try {
       setLoading(true);
       if (!longUrl) return;
+
+      if (!isUrl(longUrl)) {
+        alert('not a valid url');
+        return;
+      }
 
       const shortUrl = await shortenUrlAndSave(longUrl, wallet);
       setShortUrl(shortUrl);
