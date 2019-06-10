@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
 const ShortenUrl = ({ wallet }) => {
   const [longUrl, setLongUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [inProgress, setInProgress] = useState(false);
 
   const shortenUrl = async () => {
     try {
-      setLoading(true);
+      setInProgress(true);
       if (!longUrl) return;
 
       if (!isUrl(longUrl)) {
@@ -37,7 +37,7 @@ const ShortenUrl = ({ wallet }) => {
       alert('something went wrong');
     } finally {
       setLongUrl('');
-      setLoading(false);
+      setInProgress(false);
     }
   };
 
@@ -59,7 +59,7 @@ const ShortenUrl = ({ wallet }) => {
         color="primary"
         onClick={shortenUrl}
         size="large"
-        disabled={loading}
+        disabled={inProgress}
       >
         Shorten
       </Button>
@@ -70,7 +70,7 @@ const ShortenUrl = ({ wallet }) => {
         </Typography>
       ) : null}
 
-      {loading ? <CircularProgress /> : null}
+      {inProgress ? <CircularProgress /> : null}
     </Grid>
   );
 };
