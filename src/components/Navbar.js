@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Navbar = () => {
+const Navbar = ({ walletAddress }) => {
   const classes = useStyles();
   return (
     <AppBar position="static">
@@ -22,6 +22,7 @@ const Navbar = () => {
         <Typography variant="h6" color="inherit" className={classes.grow}>
           Arweave URL Shortener
         </Typography>
+        <Typography variant="body1">{walletAddress}</Typography>
       </Toolbar>
     </AppBar>
   );

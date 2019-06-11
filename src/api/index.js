@@ -43,6 +43,9 @@ export const getLongUrl = async shortUrlPath => {
   return longUrl;
 };
 
+export const getWalletAddress = async wallet =>
+  arweave.wallets.jwkToAddress(wallet);
+
 export const getAllSavedUrls = async () => {
   const query = {
     op: 'equals',

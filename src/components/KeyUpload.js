@@ -3,7 +3,6 @@ import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import arweave from '../api/arweaveSetup';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,13 +19,7 @@ const KeyUpload = ({ setWallet }) => {
     filereader.addEventListener('loadend', async event => {
       try {
         const wallet = JSON.parse(event.target.result);
-        const walletAddress = await arweave.wallets.jwkToAddress(wallet);
-
-        if (!walletAddress) {
-          throw new Error('No wallet address found');
-        }
-
-        setWallet(wallet);
+        await setWallet(wallet);
       } catch (e) {
         alert(
           'Something want wrong, make sure you have uploaded the correct file'

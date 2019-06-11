@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import KeyUpload from './KeyUpload';
 import ShortenUrl from './ShortenUrl';
 import { makeStyles } from '@material-ui/core/styles';
+import useWallet from '../hooks/useWallet';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -14,12 +15,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Home = () => {
-  const [wallet, setWallet] = useState(null);
+  const [{ wallet, walletAddress }, setWallet] = useWallet();
 
   const classes = useStyles();
   return (
     <Fragment>
-      <Navbar />
+      <Navbar walletAddress={walletAddress} />
       <Container fixed>
         <Grid
           container
