@@ -22,7 +22,7 @@ const Navbar = ({ walletAddress }) => {
         <Typography variant="h6" color="inherit" className={classes.grow}>
           Arweave URL Shortener
         </Typography>
-        <Typography variant="body1">{walletAddress}</Typography>
+        <Typography variant="body2">{walletAddress}</Typography>
       </Toolbar>
     </AppBar>
   );
