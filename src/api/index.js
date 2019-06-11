@@ -46,11 +46,19 @@ export const getLongUrl = async shortUrlPath => {
 export const getWalletAddress = async wallet =>
   arweave.wallets.jwkToAddress(wallet);
 
-export const getAllSavedUrls = async () => {
+export const getAllSavedUrls = async walletAddress => {
   const query = {
-    op: 'equals',
-    expr1: 'App-Name',
-    expr2: getAppName()
+    op: 'and',
+    expr1: {
+      op: 'equals',
+      expr1: 'from',
+      expr2: walletAddress
+    },
+    expr2: {
+      op: 'equals',
+      expr1: 'App-Name',
+      expr2: getAppName()
+    }
   };
 
   const txids = await arweave.arql(query);
