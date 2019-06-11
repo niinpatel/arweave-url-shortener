@@ -7,6 +7,7 @@ import KeyUpload from './KeyUpload';
 import ShortenUrl from './ShortenUrl';
 import { makeStyles } from '@material-ui/core/styles';
 import useWallet from '../hooks/useWallet';
+import SavedUrls from './SavedUrls';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,6 +35,8 @@ const Home = () => {
             <KeyUpload setWallet={setWallet} />
           )}
         </Grid>
+
+        {walletAddress ? <SavedUrls walletAddress={walletAddress} /> : null}
       </Container>
     </Fragment>
   );
