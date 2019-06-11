@@ -1,12 +1,12 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Route, HashRouter } from 'react-router-dom';
 
 import Home from './components/Home';
 import ShortToLongUrl from './components/ShortToLongUrl';
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Route exact path="/" component={Home} />
       <Route
         path="/:shortUrlPath"
@@ -14,7 +14,7 @@ const App = () => {
           <ShortToLongUrl shortUrlPath={match.params.shortUrlPath} />
         )}
       />
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
