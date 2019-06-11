@@ -38,7 +38,57 @@ export const getLongUrl = async shortUrlPath => {
   }
 
   const transaction = await arweave.transactions.get(txid);
-  const longUrl = await transaction.get('data', { decode: true, string: true });
+  const longUrl = await extractTransactionData(transaction);
 
   return longUrl;
+};
+
+export const getAllSavedUrls = async () => {
+  const query = {
+    op: 'equals',
+    expr1: 'App-Name',
+    expr2: getAppName()
+  };
+
+  const txids = await arweave.arql(query);
+
+  const savedUrls = Promise.all(
+    txids.map(txid => arweave.transactions.get(txid))
+  )
+    .then(transactions =>
+      Promise.all(
+        transactions.map(transaction => {
+          return Promise.all([
+            extractTransactionData(transaction),
+            extractTransactionTags(transaction)
+          ]);
+        })
+      )
+    )
+    .then(transactions => transactions.map(extractUrlsFromDecodedTransaction));
+
+  return savedUrls;
+};
+
+const extractTransactionData = async transaction =>
+  transaction.get('data', { decode: true, string: true });
+
+const extractTransactionTags = async transaction => {
+  const tagIds = await transaction.get('tags');
+  return Promise.all(
+    tagIds.map(tag =>
+      Promise.all([
+        tag.get('name', { decode: true, string: true }),
+        tag.get('value', { decode: true, string: true })
+      ])
+    )
+  ).then(tags => tags.map(([name, value]) => ({ name, value })));
+};
+
+const extractUrlsFromDecodedTransaction = ([data, tags]) => {
+  const longUrl = data;
+  const shortUrlPath = tags.find(tag => tag.name === 'Short-Url').value;
+  const shortUrl = `${window.location.origin}/${shortUrlPath}`;
+
+  return { longUrl, shortUrl };
 };
