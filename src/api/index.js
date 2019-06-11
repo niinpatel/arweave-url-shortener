@@ -1,5 +1,10 @@
 import arweave from './arweaveSetup';
-import { randomShortUrlString, currentUnixTime, getAppName } from './utils';
+import {
+  randomShortUrlString,
+  currentUnixTime,
+  getAppName,
+  cleanUrl
+} from './utils';
 
 export const shortenUrlAndSave = async (url, wallet) => {
   const shortUrl = randomShortUrlString();
@@ -12,7 +17,7 @@ export const shortenUrlAndSave = async (url, wallet) => {
   await arweave.transactions.sign(transaction, wallet);
   await arweave.transactions.post(transaction);
 
-  return `${window.location.origin}/${shortUrl}`;
+  return constructShortUrlFromPath(shortUrl);
 };
 
 export const getLongUrl = async shortUrlPath => {
@@ -99,7 +104,10 @@ const extractTransactionTags = async transaction => {
 const extractUrlsFromDecodedTransaction = ([data, tags]) => {
   const longUrl = data;
   const shortUrlPath = tags.find(tag => tag.name === 'Short-Url').value;
-  const shortUrl = `${window.location.origin}/${shortUrlPath}`;
+  const shortUrl = constructShortUrlFromPath(shortUrlPath);
 
   return { longUrl, shortUrl };
 };
+
+const constructShortUrlFromPath = shortUrlPath =>
+  cleanUrl(`${window.location.href}/${shortUrlPath}`);

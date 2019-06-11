@@ -16,3 +16,5 @@ export const getAppName = () => {
   }
   return APP_NAME;
 };
+
+export const cleanUrl = url => url.replace(/([^:]\/)\/+/g, '$1');
